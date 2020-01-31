@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">manjum-CardioBook</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_date">Enter date</string>
+</resources>
