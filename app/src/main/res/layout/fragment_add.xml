@@ -2,19 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#8F84FFFF"
     android:backgroundTint="#CB47105F"
     tools:context=".AddFragment"
     android:layout_gravity="start"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <!-- TODO: Update blank fragment layout -->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/X"
+            android:layout_width="78dp"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_delete" />
+
+
+        <Button
+            android:id="@+id/Enter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="@android:integer/config_shortAnimTime"
+            android:text="Enter" />
+
+    </LinearLayout>
+
+
+
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+
+
+
+    <!-- LinearLayout Inside ScrollView -->
 
 
     <LinearLayout
@@ -22,34 +56,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter your data"
-            android:textSize="25dp"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/X"
-                android:layout_width="78dp"
-                android:layout_height="match_parent"
-                android:src="@android:drawable/ic_delete" />
-
-
-            <Button
-                android:id="@+id/Enter"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="@android:integer/config_shortAnimTime"
-                android:text="Enter" />
-
-        </LinearLayout>
 
 
         <EditText
@@ -108,5 +114,5 @@
             android:textSize="25dp" />
     </LinearLayout>
 
-
+    </ScrollView>
 </LinearLayout>
