@@ -1,5 +1,7 @@
 package com.example.manjum_cardiobook;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,6 +15,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AddFragment.OnMessageReadListener {
@@ -30,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
     private Log Log;
 
     public static FragmentManager fragmentManager;
+
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +66,46 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
         data2 = new ArrayList<>();
         adaptor = new ArrayAdapter<>(this, R.layout.listview, data2);
         list.setAdapter(adaptor);
+
+        database = FirebaseFirestore.getInstance();
+
+        final CollectionReference collectionReference = database.collection("Cities");
+
+        final ArrayList<City> cities = new ArrayList<>();
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+
+                    Log.d(TAG, "onEvent: Firestore Error", e);
+                    return;
+                }
+
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+//                    android.util.Log.d(TAG, "onEvent: " + doc.getData());
+                    City city = doc.toObject(City.class);   // Converts Firestore document to object
+                    android.util.Log.d(TAG, "onEvent: " + city.toString());
+
+                    cities.add(city);
+                }
+
+            }
+        });
+
+        collectionReference.add(new City("Fake city", "Fake province"))
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        android.util.Log.d(TAG, "Failed uploading");
+                    }
+                });
 
 
 

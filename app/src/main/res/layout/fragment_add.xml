@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8F84FFFF"
-    android:backgroundTint="#CB47105F"
-    tools:context=".AddFragment"
     android:layout_gravity="start"
     android:orientation="vertical"
-    >
+    android:weightSum="2"
+    tools:context=".AddFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="-1"
         android:orientation="horizontal">
 
         <ImageButton
@@ -31,88 +31,95 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="@android:integer/config_shortAnimTime"
+            android:backgroundTint="#9C9AE248"
             android:text="Enter" />
 
     </LinearLayout>
 
 
-
-
-
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
         android:scrollbars="none">
 
 
+        <!-- LinearLayout Inside ScrollView -->
 
 
-    <!-- LinearLayout Inside ScrollView -->
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-
-        <EditText
-            android:id="@+id/data"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_date"
-            android:inputType="date"
-            android:textSize="25dp" />
+            android:orientation="vertical">
 
 
-
-    <EditText
-            android:id="@+id/time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter time"
-            android:inputType="time"
-            android:textSize="25dp" />
-
-
-    <EditText
-            android:id="@+id/systolic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter systolic"
-            android:inputType="number"
-            android:textSize="25dp" />
+            <EditText
+                android:id="@+id/data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/enter_date"
+                android:textSize="25dp" />
 
 
-    <EditText
-            android:id="@+id/diastolic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter diastolic"
-            android:inputType="number"
-            android:textSize="25dp" />
+            <EditText
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="Enter time"
+                android:inputType="time"
+                android:textSize="25dp" />
 
 
+            <EditText
+                android:id="@+id/systolic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter systolic"
+                android:inputType="number"
+                android:textSize="25dp" />
 
-    <EditText
-            android:id="@+id/heartrate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter heart rate"
-            android:inputType="number"
-            android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/diastolic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter diastolic"
+                android:inputType="number"
+                android:textSize="25dp" />
 
 
-    <EditText
-            android:id="@+id/comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter a comment"
-            android:inputType="text"
-            android:textSize="25dp" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/heartrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter heart rate"
+                android:inputType="number"
+                android:textSize="25dp" />
+
+
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter a comment"
+                android:inputType="text"
+                android:textSize="25dp" />
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="349dp"
+                android:layout_gravity="bottom"
+                android:keyboardNavigationCluster="false">
+
+            </Space>
+
+
+        </LinearLayout>
 
     </ScrollView>
+
+
 </LinearLayout>

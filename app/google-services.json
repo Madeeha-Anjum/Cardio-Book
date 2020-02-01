@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1034914731331",
+    "firebase_url": "https://cmput-301-assign1.firebaseio.com",
+    "project_id": "cmput-301-assign1",
+    "storage_bucket": "cmput-301-assign1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034914731331:android:55561e573dc61a3628cbf6",
+        "android_client_info": {
+          "package_name": "com.example.manjum_cardiobook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034914731331-ne8m52rb8htqgtnkr2u2ekvdjqhi0oo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI8aziCAcwOTbzr7SLs4ERhnSiviRxL2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034914731331-ne8m52rb8htqgtnkr2u2ekvdjqhi0oo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
