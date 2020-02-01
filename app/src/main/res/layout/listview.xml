@@ -1,15 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--Custom layout of how I want the individual Views to be seen in the list -->
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/listview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:textSize = "50sp"
-    android:textColor="@color/colorPrimaryDark">
+    android:layout_height="wrap_content"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="50">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:text="Date"
+                android:paddingEnd="20dp"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+            <TextView
+            android:layout_width="wrap_content"
+                android:id="@+id/LTV_date"
+            android:layout_height="50dp"
+            android:layout_weight="50"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" >
+
+            </TextView>
+
+        </LinearLayout>
 
 
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
-</TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:paddingEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Time"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:id="@+id/LTV_time"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:text="Systolic"
+                android:paddingEnd="20dp"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:id="@+id/LTV_systolic"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="50">
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:paddingEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Diastolic"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:id="@+id/LTV_diastolic"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:paddingEnd="20dp"
+                android:text="Heart Rate"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:id="@+id/LTV_heartrate"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:paddingEnd="20dp"
+                android:gravity="center_vertical"
+                android:text="Comment"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="50"
+                android:gravity="center_vertical"
+                android:id="@+id/LTV_comment"
+                android:textColor="@android:color/black" >
+
+            </TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

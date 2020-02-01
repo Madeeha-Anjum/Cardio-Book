@@ -1,12 +1,10 @@
 package com.example.manjum_cardiobook;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -36,17 +30,18 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
     //_____________________Constants_______________________________
     public static final String TAG = " MainActivity ";
     private Button Add, Delete, Edit;
-    private TextView City;
-    private ListView list;
-    private ArrayAdapter adaptor;
-    private ArrayList<StoreData> data; //Array of class objects
-    private ArrayList<String> data2;
+    private ListView list_view;
+    private ArrayList<BloodPressure> data; //Array of class objects
+
     public static LinearLayout buttons;
-    private Log Log;
-
     public static FragmentManager fragmentManager;
-
+    private BloodPressureListAdapter  adapter;
     private FirebaseFirestore database;
+    private CollectionReference collectionReference;
+//    private int last = -1;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +54,20 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
         Add = (Button) findViewById(R.id.Add);
         Delete = (Button) findViewById(R.id.Delete);
         Edit = (Button) findViewById(R.id.Edit);
-        list = (ListView) findViewById(R.id.DataView);
+        list_view = (ListView) findViewById(R.id.DataView);
         buttons = (LinearLayout) findViewById(R.id.buttons);
-
         data = new ArrayList<>();
-        data2 = new ArrayList<>();
-        adaptor = new ArrayAdapter<>(this, R.layout.listview, data2);
-        list.setAdapter(adaptor);
-
+        fragmentManager = getSupportFragmentManager();
         database = FirebaseFirestore.getInstance();
+        adapter = new BloodPressureListAdapter (MainActivity.this, R.layout.listview, data);
+        list_view.setAdapter(adapter);
 
-        final CollectionReference collectionReference = database.collection("Cities");
 
-        final ArrayList<City> cities = new ArrayList<>();
 
+//        final ArrayList<City> cities = new ArrayList<>(); //__________________________________________________________________________________________________________
+        collectionReference = database.collection("BloodPressure");
+
+        //get everything from database and put it in the listview when app starts
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -83,46 +78,39 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                 }
 
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-//                    android.util.Log.d(TAG, "onEvent: " + doc.getData());
-                    City city = doc.toObject(City.class);   // Converts Firestore document to object
-                    android.util.Log.d(TAG, "onEvent: " + city.toString());
+                    Log.d("log", "when do i move here ");
 
-                    cities.add(city);
+//                    android.util.Log.d(TAG, "onEvent: " + doc.getData());
+                    //***********************************Converts Firestore document to object*****************************************
+                    BloodPressure storeddata = doc.toObject(BloodPressure.class);
+                    //***********************************|||||||||||||||||||||||||||||||||||||*****************************************
+                    android.util.Log.d(TAG, "onEvent: " + storeddata.toString());
+                    data.add(storeddata);
+
+                    adapter.notifyDataSetChanged();
+
                 }
 
             }
         });
 
-        collectionReference.add(new City("Fake city", "Fake province"))
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        android.util.Log.d(TAG, "Failed uploading");
-                    }
-                });
+        android.util.Log.d(TAG, "On delet ");
 
 
+        Delete.setOnClickListener(new View.OnClickListener() {      //instantiating an anonymous class but we don't need syntax cause we arne using it again
 
-        fragmentManager = getSupportFragmentManager();
+             @Override
+            //overriding a method in the anonymous class
+            public void onClick(View v) {
+//                if (last != -1){
+//                    data.remove(last);
+//                    adapter.notifyDataSetChanged();
+//
+//                }
+//                last = -1 ;
+            }
+        });
 
-
-         if (data.size() > 0){
-             Log.d(TAG, "Oreload");
-             StoreData v = (StoreData) data.get(0);
-             String s = v.retrieveData().toString();
-
-             Log.d(  s, "jychjgchgcghcjgvcjgv");
-
-
-             adaptor.notifyDataSetChanged();
-
-        }
 
 
 
@@ -153,25 +141,24 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
     }
 
+
+
+
+
+
     //___________________________//fragment communicates with the activity on this method____________________
 
 
-
-
-
-    @Override
-    public void OnDataRead(StoreData object) {
+    public void OnDataRead(BloodPressure obj) {
         //fragment communicaters with the activity on this method
 
 
         //Acstivity gets the message
 
-        Log.d("log", "Data has been recived by the activity");
+        Log.d(TAG, "Data has been recived by the activity");
 
 
-        data.add(object);
 
-        adaptor.notifyDataSetChanged();
 
         //close the fragment.
         Fragment fragment = fragmentManager.findFragmentById(R.id.AddFragcont);
@@ -182,16 +169,31 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
         buttons.setVisibility(View.VISIBLE);
 
+        //store data gotten from fragemtn into the data bace and also give it to the lsitview
 
+        data.add(obj);
 
-        StoreData v = (StoreData) data.get(0);
-        String s = v.retrieveData();
+//Now add the data to the databacce also
+        collectionReference.add(obj)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                    }
+                })
 
-        Log.d(  s, "jychjgchgcghcjgvcjgv");
-
-        data2.add(s);
-        adaptor.notifyDataSetChanged();
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        android.util.Log.d(TAG, "Failed uploading");
+                    }
+                });
+        Log.d(TAG, "Data has been recived by the activity");
 
 
     }
+
+
+
+
 }

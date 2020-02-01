@@ -54,7 +54,7 @@ public class AddFragment extends Fragment {
         //If you declare a variable in an; automatically assigned public, static, and final modifiers.
         // In addition you cannot call a method private.
 
-        public void OnDataRead(StoreData object); //Method for the abstract interface (aka cannot have a body )
+        public void OnDataRead(BloodPressure obj); //Method for the abstract interface (aka cannot have a body )
         //rule: CHECK WATHER THE INTERFACE IS IMPLEMENTED BY THE PARENT ACTIVITY (onattach methos )
     }
 
@@ -66,7 +66,7 @@ public class AddFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
-        date = view.findViewById(R.id.data);
+        date = view.findViewById(R.id.date);
         time = view.findViewById(R.id.time);
         systolic = view.findViewById(R.id.systolic);
         diastolic = view.findViewById(R.id.diastolic);
@@ -75,15 +75,12 @@ public class AddFragment extends Fragment {
 
         Enter = view.findViewById(R.id.Enter);
         X = view.findViewById(R.id.X);
-
-
-
+        Log.d(TAG, "Oncreate View Started");
 
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
 //                https://stackoverflow.com/questions/45283857/how-to-get-date-and-time-from-date-time-picker-dialog-and-show-it/*/
                 final Calendar getDate = Calendar.getInstance();
@@ -104,10 +101,8 @@ public class AddFragment extends Fragment {
 
                 date.setText(format.format(getDate.getTime()));
 
-
             }
         });
-
 
         time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,8 +129,6 @@ public class AddFragment extends Fragment {
             }
         });
 
-
-
         Enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,12 +142,9 @@ public class AddFragment extends Fragment {
                 String Diastolic = diastolic.getText().toString();
                 String Heartrate = heartrate.getText().toString();
                 String Comment = comment.getText().toString();
+                BloodPressure obj = new BloodPressure(Date,Time, Systolic, Diastolic, Heartrate,Comment);
 
-
-                StoreData new_object_data = new StoreData(Date, Time, Systolic, Diastolic, Heartrate, Comment);
-
-
-                messageReadListener.OnDataRead(new_object_data); //passes it to the mainactivty method (OnmessageRead)
+                messageReadListener.OnDataRead(obj); //passes it to the mainactivty method (OnmessageRead)
 
             }
         });
@@ -193,7 +183,7 @@ public class AddFragment extends Fragment {
 //
 
 
-        activity = (Activity) context;  //___________Activity instance
+        this.activity = (Activity) context;  //___________Activity instance
 //        this.messageReadListener = (OnMessageReadListener) (Activity) context; //get the call back for the interface
 
 

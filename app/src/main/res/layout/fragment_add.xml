@@ -16,101 +16,268 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="-1"
+        android:weightSum="2"
         android:orientation="horizontal">
+        <Button
+            android:id="@+id/Enter"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:backgroundTint="@android:color/holo_green_light"
+
+            android:layout_marginEnd="40dp"
+            android:text="Enter" />
+
 
         <ImageButton
             android:id="@+id/X"
-            android:layout_width="78dp"
+            android:layout_width="0dp"
+            android:layout_gravity="start"
             android:layout_height="match_parent"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@android:drawable/ic_delete"
+            android:backgroundTintMode="screen"
+            android:layout_weight="0.5" />
 
 
-        <Button
-            android:id="@+id/Enter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="@android:integer/config_shortAnimTime"
-            android:backgroundTint="#9C9AE248"
-            android:text="Enter" />
+
 
     </LinearLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="2"
         android:scrollbars="none">
 
-
         <!-- LinearLayout Inside ScrollView -->
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- create a Linear Layout with horizontal orientation and weightSum property -->
 
-            <EditText
-                android:id="@+id/data"
+            <LinearLayout
+                android:id="@+id/firstLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/enter_date"
-                android:textSize="25dp" />
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
+                <!-- place one TextView and one EditText inside layout using weight property -->
 
-            <EditText
-                android:id="@+id/time"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Date"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/date"
+                    android:focusable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1.4"
+                    android:background="@android:color/darker_gray"
+                    android:hint="Date"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"  />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/secondLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="Enter time"
-                android:inputType="time"
-                android:textSize="25dp" />
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
+                <!-- place one TextView and one EditText inside layout using weight property -->
 
-            <EditText
-                android:id="@+id/systolic"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Time"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/time"
+                    android:focusable="false"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1.4"
+                    android:background="@android:color/darker_gray"
+                    android:hint="Time"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"  />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/thirdLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter systolic"
-                android:inputType="number"
-                android:textSize="25dp" />
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
+                <!-- place one TextView and one EditText inside layout using weight property -->
 
-            <EditText
-                android:id="@+id/diastolic"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Systolic"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/systolic"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1.4"
+                    android:background="@android:color/darker_gray"
+                    android:hint="Systolic"
+                    android:inputType="number"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"  />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/fourthLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter diastolic"
-                android:inputType="number"
-                android:textSize="25dp" />
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
+                <!-- place one TextView and one EditText inside layout using weight property -->
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.6"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Diastolic"
+                    android:textSize="15dp"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/diastolic"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1.4"
+                    android:background="@android:color/darker_gray"
+                    android:hint="Diastolic"
+                    android:inputType="number"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"  />
+            </LinearLayout>
+
+            <LinearLayout
+            android:id="@+id/fifthLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!-- place one TextView and one EditText inside layout using weight property -->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="0.6"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Heart Rate"
+                android:textSize="15dp"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/heartrate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter heart rate"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1.4"
+                android:background="@android:color/darker_gray"
+                android:hint="Heartrate"
                 android:inputType="number"
-                android:textSize="25dp" />
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:singleLine="true"
+                android:textColor="@android:color/black"  />
+        </LinearLayout>
 
+            <LinearLayout
+            android:id="@+id/sixthLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!-- place one TextView and one EditText inside layout using weight property -->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="0.6"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Comment"
+                android:textSize="15dp"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter a comment"
-                android:inputType="text"
-                android:textSize="25dp" />
-
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1.4"
+                android:background="@android:color/darker_gray"
+                android:hint="Comment"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:maxLength="20"
+                android:textColor="@android:color/black"  />
+        </LinearLayout>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="349dp"
+                android:layout_height="267dp"
                 android:layout_gravity="bottom"
                 android:keyboardNavigationCluster="false">
 
@@ -122,4 +289,8 @@
     </ScrollView>
 
 
+
+
 </LinearLayout>
+
+
