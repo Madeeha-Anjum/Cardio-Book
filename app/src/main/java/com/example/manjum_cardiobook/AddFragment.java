@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -40,10 +41,22 @@ public class AddFragment extends Fragment {
     private ImageButton X;
     private Activity activity;
     private OnMessageReadListener messageReadListener;  //call back on the interface
-
+    private OnMessageReplaceListener messageReplaceListener;
+    private String Replacedate, Replacetime, Replacesystolic, Replacediastolic, Replaceheartrate, Replacecomment = ""; //default
+    private String DocID ="";
 
     public AddFragment() {
         // Required empty public constructor
+    }
+
+    public AddFragment(String replacedate, String replacetime, String replacesystolic, String replacediastolic, String replaceheartrate, String replacecomment, String docID) {
+        Replacedate = replacedate;
+        Replacetime = replacetime;
+        Replacesystolic = replacesystolic;
+        Replacediastolic = replacediastolic;
+        Replaceheartrate = replaceheartrate;
+        Replacecomment = replacecomment;
+        DocID = docID;
     }
 
 
@@ -58,6 +71,14 @@ public class AddFragment extends Fragment {
         //rule: CHECK WATHER THE INTERFACE IS IMPLEMENTED BY THE PARENT ACTIVITY (onattach methos )
     }
 
+    public interface OnMessageReplaceListener {
+        //o access the interface methods, the interface must be "implemented"  (instead of extends).
+        //If you declare a variable in an; automatically assigned public, static, and final modifiers.
+        // In addition you cannot call a method private.
+
+        public void OnDataReplace(BloodPressure obj); //Method for the abstract interface (aka cannot have a body )
+        //rule: CHECK WATHER THE INTERFACE IS IMPLEMENTED BY THE PARENT ACTIVITY (onattach methos )
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +93,14 @@ public class AddFragment extends Fragment {
         diastolic = view.findViewById(R.id.diastolic);
         heartrate = view.findViewById(R.id.heartrate);
         comment = view.findViewById(R.id.comment);
+
+        //default empty
+        date.setText(Replacedate);
+        time.setText(Replacetime);
+        systolic.setText(Replacesystolic);
+        diastolic.setText(Replacediastolic);
+        heartrate.setText(Replaceheartrate);
+        comment.setText(Replacecomment);
 
         Enter = view.findViewById(R.id.Enter);
         X = view.findViewById(R.id.X);
@@ -136,16 +165,44 @@ public class AddFragment extends Fragment {
                 // hen the fragment prses the send button we have to
                 // //call  the method (on meeage read) using the call back interface
 
+                Log.d(TAG, Replacecomment);
+
+
                 String Date = date.getText().toString();
                 String Time = time.getText().toString();
                 String Systolic = systolic.getText().toString();
                 String Diastolic = diastolic.getText().toString();
                 String Heartrate = heartrate.getText().toString();
                 String Comment = comment.getText().toString();
-                BloodPressure obj = new BloodPressure(Date,Time, Systolic, Diastolic, Heartrate,Comment);
 
-                messageReadListener.OnDataRead(obj); //passes it to the mainactivty method (OnmessageRead)
 
+                BloodPressure obj = new BloodPressure(Date, Time, Systolic, Diastolic, Heartrate,Comment);
+
+
+                if ( Date.length() > 0 && Time.length() > 0 && Systolic.length() > 0 && Diastolic.length() > 0 && Heartrate.length() > 0 && Comment.length() > 0) {
+
+                    Log.d(TAG, Date.toLowerCase());
+                    if ( DocID.length() > 0) {
+                        Toast.makeText(activity, "succesfull", Toast.LENGTH_SHORT).show();
+                         messageReplaceListener.OnDataReplace(obj);
+                    }
+
+                    else {
+                    messageReadListener.OnDataRead(obj); //passes it to the mainactivty method (OnmessageRead)
+
+                }
+            }
+                else {
+
+                    //close the fragment.
+                    Fragment fragment = fragmentManager.findFragmentById(R.id.AddFragcont);
+
+                    if (fragment != null) {
+                        fragmentManager.beginTransaction().remove(fragment).commit();
+                    }
+                    Toast.makeText(activity, "Error: Blank entry was unsuccesfull", Toast.LENGTH_SHORT).show();
+                    MainActivity.buttons.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -190,9 +247,20 @@ public class AddFragment extends Fragment {
         try {
             messageReadListener = (OnMessageReadListener) activity;  //get the call back for the interface
 
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + "Must override on message read");
         }
+
+
+        try {
+              //get the call back for the interface
+            messageReplaceListener =  (OnMessageReplaceListener) activity;
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + "Must override on message read");
+        }
+
 
     }
 

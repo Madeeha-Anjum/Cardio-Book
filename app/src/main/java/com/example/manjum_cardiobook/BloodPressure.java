@@ -3,15 +3,28 @@ package com.example.manjum_cardiobook;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.firestore.DocumentId;
+
 public class BloodPressure {
 
-    private String date, time, systolic, diastolic, heartrate, comment;
+    @DocumentId
+    private String docID;
+
+    public String getDocID() {
+        return docID;
+    }
+
+    public void setDocID(String docID) {
+        this.docID = docID;
+    }
+
+    private String date, time, systolic, diastolic, heartrate, comment, info;
 
     public BloodPressure() {
 
     }
 
-    public BloodPressure(String date, String time, String systolic, String diastolic, String heartrate, String comment){
+    public BloodPressure(String date, String time, String systolic, String diastolic, String heartrate, String comment, String info) {
 
         //Now we store the data in the fields
         this.date = date;
@@ -20,16 +33,15 @@ public class BloodPressure {
         this.diastolic = diastolic;
         this.heartrate = heartrate;
         this.comment = comment;
+        this.info = info;
+    }
 
-//
-//        //for testing this class
-//        this.date = "data";
-//        this.time = "time";
-//        this.systolic = "systolic";
-//        this.diastolic = "diastolic";
-//        this.heartrate = "heartrate";
-//        this.comment = "comment";
+    public String getInfo() {
+        return info;
+    }
 
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public String getDate() {
@@ -87,18 +99,5 @@ public class BloodPressure {
         return "Date: " + date + " Time: " + time + "Sys: " + systolic + " dia: " + diastolic + "Heartrate: " + heartrate + " Comment" + comment;
     }
 
-//    public void Check(){
-//        /*
-//    date measured (presented in yyyy-mm-dd format)
-//    time measured (presented in hh:mm format)
-//    systolic pressure in mm Hg (non-negative integer)
-//    diastolic pressure in mm Hg (non-negative integer)
-//    heart rate in beats per minute (non-negative integer)
-//    comment (textual, up to 20 characters)
-//
-//*/
-//        return;
-//
-//    }
 
 }

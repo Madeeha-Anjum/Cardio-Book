@@ -47,7 +47,7 @@ class BloodPressureListAdapter extends ArrayAdapter<BloodPressure> {
         TextView tvDiastolic = (TextView) convertView.findViewById(R.id.LTV_diastolic);
         TextView tvHeartrate = (TextView) convertView.findViewById(R.id.LTV_heartrate);
         TextView tvComment = (TextView) convertView.findViewById(R.id.LTV_comment);
-
+        TextView tvInfo = (TextView)  convertView.findViewById(R,id)
         tvDate.setText(Date);
         tvTime .setText(Time);
         tvSystolic.setText(Systolic);
