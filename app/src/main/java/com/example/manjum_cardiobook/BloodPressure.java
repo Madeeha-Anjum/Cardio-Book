@@ -1,9 +1,13 @@
 package com.example.manjum_cardiobook;
 
 
+import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.DocumentId;
+
+import java.util.Date;
 
 public class BloodPressure {
 
@@ -18,13 +22,19 @@ public class BloodPressure {
         this.docID = docID;
     }
 
-    private String date, time, systolic, diastolic, heartrate, comment, info;
+    private String date;
+    private String time;
+    public String systolic;
+    private String diastolic;
+    private String heartrate;
+    private String comment;
+    public Date timestamp;
 
     public BloodPressure() {
 
     }
 
-    public BloodPressure(String date, String time, String systolic, String diastolic, String heartrate, String comment, String info) {
+    public BloodPressure(String date, String time, String systolic, String diastolic, String heartrate, String comment) {
 
         //Now we store the data in the fields
         this.date = date;
@@ -33,16 +43,10 @@ public class BloodPressure {
         this.diastolic = diastolic;
         this.heartrate = heartrate;
         this.comment = comment;
-        this.info = info;
+
     }
 
-    public String getInfo() {
-        return info;
-    }
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
 
     public String getDate() {
         return date;
@@ -92,6 +96,13 @@ public class BloodPressure {
         this.comment = comment;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
     @NonNull
     @Override

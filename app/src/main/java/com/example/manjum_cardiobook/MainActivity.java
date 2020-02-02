@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
     private BloodPressureListAdapter adapter;
     private FirebaseFirestore database;
     private CollectionReference collectionReference;
-    public int last, lastrep = -1;
+    static int last = -1;
     String DocID = " ";
 
     @Override
@@ -62,11 +65,19 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
         list_view.setAdapter(adapter);
 
 
+        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                last = position;
+                Log.d(TAG, "we have selected what we want to delete  ");
+            }
+        });
+
 //        final ArrayList<City> cities = new ArrayList<>(); //__________________________________________________________________________________________________________
         collectionReference = database.collection("BloodPressure");
 
         //get everything from database and put it in the listview when app starts
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        collectionReference.orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
@@ -75,12 +86,14 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                     return;
                 }
                 data.clear();
+
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     Log.d("log", "when do i move here ");
 
 //                    android.util.Log.d(TAG, "onEvent: " + doc.getData());
                     //***********************************Converts Firestore document to object*****************************************
                     BloodPressure storeddata = doc.toObject(BloodPressure.class);
+
                     //***********************************|||||||||||||||||||||||||||||||||||||*****************************************
                     android.util.Log.d(TAG, "onEvent: " + storeddata.toString());
 
@@ -93,15 +106,10 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
             }
         });
 
+
         android.util.Log.d(TAG, "On delet ");
 
-        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                last = position;
-                Log.d(TAG, "we have selected what we want to delete  ");
-            }
-        });
+
 
         Delete.setOnClickListener(new View.OnClickListener() {      //instantiating an anonymous class but we don't need syntax cause we arne using it again
 
@@ -114,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    last = -1;
                                     Log.d(TAG, "Onsucess: we have deleted");
                                 }
                             })
@@ -124,17 +133,14 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                                 }
                             });
 
-
+                    data.remove(last);
+                    adapter.notifyDataSetChanged();
                 }
-                data.remove(last);
-                last = -1;
 
-                adapter.notifyDataSetChanged();
+
             }
 
         });
-
-
 
 
         //----------------- Adding Data ------------------------------------//
@@ -149,37 +155,25 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                 Log.w("myApp", "at run time ");
                 fragtra.add(R.id.AddFragcont, HFragment, null); // useing the container
                 fragtra.commit();
+
                 //hide the buttons bar
                 buttons.setVisibility(View.GONE);
 
-
-//                fragmentManager.beginTransaction().remove(HFragment).commit();
-
             }
         });
-
-
-        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                lastrep = position;
-                Log.d(TAG, "we have selected what we want to  replace  ");
-            }
-        });
-
 
 
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (lastrep != -1) {
+                if (last != -1) {
 
-                    DocID = data.get(lastrep).getDocID();
+                    DocID = data.get(last).getDocID();
 
                     Log.d(TAG, "go to new frag  ");
                     FragmentTransaction fragtra = fragmentManager.beginTransaction();
-                    AddFragment HFragment = new AddFragment(data.get(lastrep).getDate(), data.get(lastrep).getTime(),
-                            data.get(lastrep).getSystolic(), data.get(lastrep).getDiastolic(), data.get(lastrep).getHeartrate(), data.get(lastrep).getComment(), data.get(lastrep).getDocID());
+                    AddFragment HFragment = new AddFragment(data.get(last).getDate(), data.get(last).getTime(),
+                            data.get(last).getSystolic(), data.get(last).getDiastolic(), data.get(last).getHeartrate(), data.get(last).getComment(), data.get(last).getDocID());
 
                     Log.w("myApp", "at run time ");
                     fragtra.add(R.id.AddFragcont, HFragment, null); // useing the container
@@ -187,9 +181,10 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
                     //hide the buttons bar
                     buttons.setVisibility(View.GONE);
+
                 }
 
-                lastrep = -1;
+                last = -1;
                 buttons.setVisibility(View.VISIBLE);
                 adapter.notifyDataSetChanged();
             }
@@ -202,10 +197,6 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
     }
 
 
-//    Normal pressures are systolic between 90 and 140 and diastolic between 60 and 90.
-
-
-
 
     //___________________________//fragment communicates with the activity on this method____________________
 
@@ -216,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
         //Acstivity gets the message
 
-        Log.d(TAG, "Data has been recived by the activity");
+        Log.d(TAG, "Data has been received by the activity");
 
 
         //close the fragment.
@@ -232,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
         data.add(obj);
 
-        //Now add the data to the databacce also
+       //Now add the data to the databacce also
         collectionReference.add(obj)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -270,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
 
 
-
         //update the database
         database.collection("BloodPressure").document(DocID)
                 .set(obj)
@@ -290,3 +280,34 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
 
 }
+
+//
+//                    if (AddFragment.systolic.getText().length() > 0 && AddFragment.systolic.getText().length() > 0){
+//
+//
+//                            int Sys = Integer.valueOf(AddFragment.systolic.getText().toString());
+//                            int Dia = Integer.valueOf(AddFragment.diastolic.getText().toString());
+//
+//                            if ( Sys > 90 && Sys < 140 && Dia < 90 && Dia > 60){
+//        AddFragment.diastolic.setTextColor(Color.GREEN);
+//        AddFragment.systolic.setTextColor(Color.GREEN);
+//        }
+//
+//        if (Sys < 90 && Dia  < 60){
+//        AddFragment.diastolic.setTextColor(Color.TRANSPARENT);
+//        AddFragment.systolic.setTextColor(Color.TRANSPARENT);
+//        }
+//        if (Sys > 140 && Dia  > 90){
+//        AddFragment.diastolic.setTextColor(Color.RED);
+//        AddFragment.systolic.setTextColor(Color.RED);
+//        }
+//        }
+//
+//
+//
+
+
+
+
+
+

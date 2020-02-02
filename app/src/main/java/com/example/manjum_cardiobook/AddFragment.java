@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -36,7 +37,12 @@ public class AddFragment extends Fragment {
 
 
     //_____________________Constants_______________________________
-    private EditText date, time, systolic, diastolic, heartrate, comment;
+    public EditText date;
+    public EditText time;
+    public static EditText systolic;
+    public static EditText diastolic;
+    public EditText heartrate;
+    public EditText comment;
     private Button Enter;
     private ImageButton X;
     private Activity activity;
@@ -182,6 +188,8 @@ public class AddFragment extends Fragment {
                 if ( Date.length() > 0 && Time.length() > 0 && Systolic.length() > 0 && Diastolic.length() > 0 && Heartrate.length() > 0 && Comment.length() > 0) {
 
                     Log.d(TAG, Date.toLowerCase());
+
+
                     if ( DocID.length() > 0) {
                         Toast.makeText(activity, "succesfull", Toast.LENGTH_SHORT).show();
                          messageReplaceListener.OnDataReplace(obj);
