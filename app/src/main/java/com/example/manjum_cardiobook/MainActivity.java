@@ -1,3 +1,12 @@
+/**
+
+ Purpose: This is the main activity, it displyes the lsitview and get information from the fragemnt class (Addfragmetn)
+ Design rationale: the fragments are created on Add click or Edit click and the databace is updated in the methods that communicate with the fragment.
+ This class implements 2 interfacecs one for the add and one for the Edit fragment
+ Outstanding issues: NO
+
+*/
+
 package com.example.manjum_cardiobook;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -5,13 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,7 +29,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,19 +36,23 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements AddFragment.OnMessageReadListener, AddFragment.OnMessageReplaceListener {
 
 
-    //_____________________Constants_______________________________
+    //______________________________Constants_______________________________________________________
     public static final String TAG = " MainActivity ";
     private Button Add, Delete, Edit;
     private ListView list_view;
     private ArrayList<BloodPressure> data; //Array of class objects
-
     public static LinearLayout buttons;
     public static FragmentManager fragmentManager;
     private BloodPressureListAdapter adapter;
     private FirebaseFirestore database;
     private CollectionReference collectionReference;
     static int last = -1;
-    String DocID = " ";
+    String DocID = "";
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Oncreate Started");
 
-        //----------------- Initializing ------------------------------------//
+        //_____________________Initializing_________________________________________________________
 
         Add = (Button) findViewById(R.id.Add);
         Delete = (Button) findViewById(R.id.Delete);
@@ -69,14 +78,17 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 last = position;
-                Log.d(TAG, "we have selected what we want to delete  ");
+                Log.d(TAG, "we have selected what we want to delete or Edit  ");
             }
         });
 
-//        final ArrayList<City> cities = new ArrayList<>(); //__________________________________________________________________________________________________________
+
         collectionReference = database.collection("BloodPressure");
 
-        //get everything from database and put it in the listview when app starts
+
+
+
+        //____________get everything from database and put it in the list view on app start_________
         collectionReference.orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -85,44 +97,38 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                     Log.d(TAG, "onEvent: Firestore Error", e);
                     return;
                 }
+
+
                 data.clear();
 
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    Log.d("log", "when do i move here ");
-
-//                    android.util.Log.d(TAG, "onEvent: " + doc.getData());
-                    //***********************************Converts Firestore document to object*****************************************
+                    Log.d("log", "There were additions ");
+                    //android.util.Log.d(TAG, "onEvent: " + doc.getData());
+                    //***************Very Important Line: Converts Firestore document to object*****
                     BloodPressure storeddata = doc.toObject(BloodPressure.class);
-
-                    //***********************************|||||||||||||||||||||||||||||||||||||*****************************************
                     android.util.Log.d(TAG, "onEvent: " + storeddata.toString());
-
                     data.add(storeddata);
-
-                    adapter.notifyDataSetChanged();
-
                 }
 
+                adapter.notifyDataSetChanged(); //update out list once due to snapshotlistener
             }
         });
 
 
-        android.util.Log.d(TAG, "On delet ");
-
-
-
+        //________________________________Delete Button_____________________________________________
         Delete.setOnClickListener(new View.OnClickListener() {      //instantiating an anonymous class but we don't need syntax cause we arne using it again
 
             @Override
             //overriding a method in the anonymous class
             public void onClick(View v) {
                 if (last != -1) {
-                    //Get the document id
+
+                    //Get the document id  to delete the doc.
                     database.collection("BloodPressure").document(data.get(last).getDocID()).delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    last = -1;
+
                                     Log.d(TAG, "Onsucess: we have deleted");
                                 }
                             })
@@ -132,26 +138,21 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                                     Log.d(TAG, "Onsucess: we have not sucessfully deleted");
                                 }
                             });
-
-                    data.remove(last);
-                    adapter.notifyDataSetChanged();
                 }
-
-
+                last = -1;
             }
 
         });
 
 
-        //----------------- Adding Data ------------------------------------//
+        //________________________________Add Button________________________________________________
         Add.setOnClickListener(new View.OnClickListener() {      //instantiating an anonymous class but we don't need syntax cause we arne using it again
             @Override
             //overriding a method in the anonymous class
             public void onClick(View v) {
-
+                //Create a fragment
                 FragmentTransaction fragtra = fragmentManager.beginTransaction();
                 AddFragment HFragment = new AddFragment();
-
                 Log.w("myApp", "at run time ");
                 fragtra.add(R.id.AddFragcont, HFragment, null); // useing the container
                 fragtra.commit();
@@ -162,18 +163,19 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
             }
         });
 
-
+        //________________________________Edit/View Button__________________________________________
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (last != -1) {
-
-                    DocID = data.get(last).getDocID();
-
+                    DocID = data.get(last).getDocID(); //get the correct docId reference
                     Log.d(TAG, "go to new frag  ");
+
+                    //Create a fragment
                     FragmentTransaction fragtra = fragmentManager.beginTransaction();
                     AddFragment HFragment = new AddFragment(data.get(last).getDate(), data.get(last).getTime(),
-                            data.get(last).getSystolic(), data.get(last).getDiastolic(), data.get(last).getHeartrate(), data.get(last).getComment(), data.get(last).getDocID());
+                            data.get(last).getSystolic(), data.get(last).getDiastolic(),
+                            data.get(last).getHeartrate(), data.get(last).getComment(), data.get(last).getDocID());
 
                     Log.w("myApp", "at run time ");
                     fragtra.add(R.id.AddFragcont, HFragment, null); // useing the container
@@ -186,27 +188,19 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
                 last = -1;
                 buttons.setVisibility(View.VISIBLE);
-                adapter.notifyDataSetChanged();
-            }
 
-            //cal methos to check blood pressure
-
-
+                }
         });
 
     }
 
 
 
-    //___________________________//fragment communicates with the activity on this method____________________
+    //_________________fragment communicates with the activity on this 2 methods____________________
 
 
     public void OnDataRead(BloodPressure obj) {
-        //fragment communicaters with the activity on this method
-
-
-        //Acstivity gets the message
-
+        //for add.onclick()
         Log.d(TAG, "Data has been received by the activity");
 
 
@@ -219,11 +213,11 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
         buttons.setVisibility(View.VISIBLE);
 
-        //store data gotten from fragemtn into the data bace and also give it to the lsitview
+        //store data gotten from fragment into the databace and which gives it to the lsitview
 
         data.add(obj);
 
-       //Now add the data to the databacce also
+       //Now add the data to the databacce
         collectionReference.add(obj)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -238,16 +232,16 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
                         android.util.Log.d(TAG, "Failed uploading");
                     }
                 });
-        Log.d(TAG, "Data has been recived by the activity");
-
+        Log.d(TAG, "Data has been relived by the activity");
 
     }
 
+
+
     public void OnDataReplace(final BloodPressure obj) {
-        //open up the fragment and pass the data to the fragment
-
-
-        Log.d(TAG, "Data has been recived and replaced by the activity");
+        //for Edit.onclick() which opens up the fragment and pass the data to the fragment
+        //we receive the data from the fragment here
+        Log.d(TAG, "Data has been received and replaced by the activity");
 
 
         //close the fragment.
@@ -259,19 +253,16 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
         buttons.setVisibility(View.VISIBLE);
 
-
-
-        //update the database
+        //update the database which updates the listview
         database.collection("BloodPressure").document(DocID)
                 .set(obj)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "onSuccess: we have edited an existing item into the databace ");
+                        Log.d(TAG, "onSuccess: we have edited an existing item into the database ");
                     }
                 });
         buttons.setVisibility(View.VISIBLE);
-        //update the list_view
 
     }
 
@@ -280,34 +271,6 @@ public class MainActivity extends AppCompatActivity implements AddFragment.OnMes
 
 
 }
-
-//
-//                    if (AddFragment.systolic.getText().length() > 0 && AddFragment.systolic.getText().length() > 0){
-//
-//
-//                            int Sys = Integer.valueOf(AddFragment.systolic.getText().toString());
-//                            int Dia = Integer.valueOf(AddFragment.diastolic.getText().toString());
-//
-//                            if ( Sys > 90 && Sys < 140 && Dia < 90 && Dia > 60){
-//        AddFragment.diastolic.setTextColor(Color.GREEN);
-//        AddFragment.systolic.setTextColor(Color.GREEN);
-//        }
-//
-//        if (Sys < 90 && Dia  < 60){
-//        AddFragment.diastolic.setTextColor(Color.TRANSPARENT);
-//        AddFragment.systolic.setTextColor(Color.TRANSPARENT);
-//        }
-//        if (Sys > 140 && Dia  > 90){
-//        AddFragment.diastolic.setTextColor(Color.RED);
-//        AddFragment.systolic.setTextColor(Color.RED);
-//        }
-//        }
-//
-//
-//
-
-
-
 
 
 

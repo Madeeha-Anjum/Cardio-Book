@@ -1,3 +1,14 @@
+/**
+
+
+ Purpose: displayed the fields for data entry and communicated with the main activity using the interface connection
+ Design rationale:The OnAttach method is important for the fragment to what activity has called it
+ Outstanding issues: NO
+
+ */
+
+
+
 package com.example.manjum_cardiobook;
 
 
@@ -36,7 +47,8 @@ import static com.example.manjum_cardiobook.MainActivity.fragmentManager;
 public class AddFragment extends Fragment {
 
 
-    //_____________________Constants_______________________________
+    //______________________________Constants_______________________________________________________
+
     public EditText date;
     public EditText time;
     public static EditText systolic;
@@ -67,7 +79,6 @@ public class AddFragment extends Fragment {
 
 
     //SPECIFY AN INTERFACE FOR ESTABLISHING COMMUNICATION
-
     public interface OnMessageReadListener {
         //o access the interface methods, the interface must be "implemented"  (instead of extends).
         //If you declare a variable in an; automatically assigned public, static, and final modifiers.
@@ -78,18 +89,13 @@ public class AddFragment extends Fragment {
     }
 
     public interface OnMessageReplaceListener {
-        //o access the interface methods, the interface must be "implemented"  (instead of extends).
-        //If you declare a variable in an; automatically assigned public, static, and final modifiers.
-        // In addition you cannot call a method private.
-
-        public void OnDataReplace(BloodPressure obj); //Method for the abstract interface (aka cannot have a body )
-        //rule: CHECK WATHER THE INTERFACE IS IMPLEMENTED BY THE PARENT ACTIVITY (onattach methos )
+        public void OnDataReplace(BloodPressure obj);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        //_____________________Initializing_________________________________________________________
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
@@ -112,12 +118,20 @@ public class AddFragment extends Fragment {
         X = view.findViewById(R.id.X);
         Log.d(TAG, "Oncreate View Started");
 
+        //________________________________Time TextView_____________________________________________
+
+        /**
+        Source:    Stackoverflow
+         Username https://stackoverflow.com/users/6263260/emily-siu
+         Answer: https://stackoverflow.com/questions/45283857/how-to-get-date-and-time-from-date-time-picker-dialog-and-show-it/
+         */
+
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                https://stackoverflow.com/questions/45283857/how-to-get-date-and-time-from-date-time-picker-dialog-and-show-it/*/
+//
                 final Calendar getDate = Calendar.getInstance();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(activity, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -138,12 +152,17 @@ public class AddFragment extends Fragment {
 
             }
         });
+        //________________________________Time TextView_____________________________________________
+        /**
+         Source:    JornalDev
+         Username https://www.journaldev.com/author/anupam
+         Answer:   https://www.journaldev.com/9976/android-date-time-picker-dialog
+         */
 
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                https://www.journaldev.com/9976/android-date-time-picker-dialog
                 // Get Current Time
                 final Calendar c = Calendar.getInstance();
                 int mHour = c.get(Calendar.HOUR_OF_DAY);
@@ -164,15 +183,13 @@ public class AddFragment extends Fragment {
             }
         });
 
+        //________________________________Enter Button_____________________________________________
         Enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //we need to use an interface method now
-                // hen the fragment prses the send button we have to
-                // //call  the method (on meeage read) using the call back interface
-
+                // When the fragment send button happens we call the method (on message read) using the call back interface
                 Log.d(TAG, Replacecomment);
-
 
                 String Date = date.getText().toString();
                 String Time = time.getText().toString();
@@ -184,17 +201,18 @@ public class AddFragment extends Fragment {
 
                 BloodPressure obj = new BloodPressure(Date, Time, Systolic, Diastolic, Heartrate,Comment);
 
-
-                if ( Date.length() > 0 && Time.length() > 0 && Systolic.length() > 0 && Diastolic.length() > 0 && Heartrate.length() > 0 && Comment.length() > 0) {
+                // ____________________If we have non empty text views______________________________
+                if ( Date.length() > 0 && Time.length() > 0 && Systolic.length() > 0 && Diastolic.length() > 0 && Heartrate.length() > 0) {
 
                     Log.d(TAG, Date.toLowerCase());
 
-
+                    // ____________________If we have an entry already in the data bace ____________
                     if ( DocID.length() > 0) {
                         Toast.makeText(activity, "succesfull", Toast.LENGTH_SHORT).show();
                          messageReplaceListener.OnDataReplace(obj);
                     }
 
+                    // ____________________If we dont have an entry already in the data bace________
                     else {
                     messageReadListener.OnDataRead(obj); //passes it to the mainactivty method (OnmessageRead)
 
@@ -202,6 +220,7 @@ public class AddFragment extends Fragment {
             }
                 else {
 
+                    // ____________________If we have empty text views______________________________
                     //close the fragment.
                     Fragment fragment = fragmentManager.findFragmentById(R.id.AddFragcont);
 
@@ -214,13 +233,10 @@ public class AddFragment extends Fragment {
             }
         });
 
-
+        //________________________________X Button(Imageview)_______________________________________
         X.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //close fragment
-
-
                 //close the fragment.
                 Fragment fragment = fragmentManager.findFragmentById(R.id.AddFragcont);
 
@@ -237,16 +253,21 @@ public class AddFragment extends Fragment {
     }
 
 
+    /**
+     Source:    Youtube
+     Username https://www.youtube.com/channel/UCfQkNueQenRQQ1NnCBe6eQQ
+     Answer:   https://www.youtube.com/watch?v=XESeir01G0A
+     */
+
+
+    //  _______________________IMPORTANT FOR FRAGMENT TO WORK___________________ ___________________
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         //tells you what activity the fragment is in
         //storing the activity that the fragment is called from
         //can have different activities call this
-//        this.activity = (Activity) context;
-//
-
+        //  Example:      this.activity = (Activity) context;
 
         this.activity = (Activity) context;  //___________Activity instance
 //        this.messageReadListener = (OnMessageReadListener) (Activity) context; //get the call back for the interface

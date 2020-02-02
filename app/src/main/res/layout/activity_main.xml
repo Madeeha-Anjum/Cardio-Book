@@ -11,9 +11,6 @@
     tools:context=".MainActivity">
 
 
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
 
         <FrameLayout
             android:layout_width="fill_parent"
@@ -22,8 +19,6 @@
             android:id="@+id/AddFragcont">
 
         </FrameLayout>
-
-<!--    </ScrollView>-->
 
 
     <LinearLayout
@@ -66,28 +61,6 @@
 
     </LinearLayout>
 
-
-
-
-
-<!--    <FrameLayout-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:id="@+id/DeleteFragcont"-->
-<!--        android:visibility="invisible">-->
-
-<!--    </FrameLayout>-->
-
-
-<!--    <FrameLayout-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:id="@+id/EditFragcont"-->
-<!--        android:visibility="invisible">-->
-
-<!--    </FrameLayout>-->
-
-
     <ListView
         android:id="@+id/DataView"
         android:layout_width="match_parent"
@@ -99,10 +72,6 @@
         android:listSelector="@android:color/darker_gray">
 
     </ListView>
-
-
-
-
 
 
 </LinearLayout>

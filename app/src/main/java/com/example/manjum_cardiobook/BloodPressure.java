@@ -1,11 +1,24 @@
+/**
+
+ Purpose: this class is very important for accessing the databace,
+ Design rationale:this class also implements the timestamp nd getting the document id
+ theses things are used to sort the data by time entered and allows us to edit the data entered
+ Outstanding issues: NO
+
+ */
+
 package com.example.manjum_cardiobook;
-
-
-import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.ServerTimestamp;
+
+
+/**
+ Source:   Firebace documentation
+ Username/Answer:   https://firebase.google.com/docs/firestore/query-data/listen
+ */
 
 import java.util.Date;
 
@@ -28,6 +41,8 @@ public class BloodPressure {
     private String diastolic;
     private String heartrate;
     private String comment;
+
+    @ServerTimestamp
     public Date timestamp;
 
     public BloodPressure() {
@@ -45,7 +60,6 @@ public class BloodPressure {
         this.comment = comment;
 
     }
-
 
 
     public String getDate() {
