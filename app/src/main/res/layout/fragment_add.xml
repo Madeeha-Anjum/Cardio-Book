@@ -166,6 +166,7 @@ User/Answer :https://abhiandroid.com/ui/linear-layout-inside-scrollview.html -->
                     android:layout_weight="1.4"
                     android:background="@android:color/darker_gray"
                     android:hint="Systolic"
+                    android:maxLength="4"
                     android:inputType="number"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
@@ -202,6 +203,7 @@ User/Answer :https://abhiandroid.com/ui/linear-layout-inside-scrollview.html -->
                     android:layout_weight="1.4"
                     android:background="@android:color/darker_gray"
                     android:hint="Diastolic"
+                    android:maxLength="4"
                     android:inputType="number"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
@@ -228,6 +230,7 @@ User/Answer :https://abhiandroid.com/ui/linear-layout-inside-scrollview.html -->
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="Heart Rate"
+
                 android:textSize="15dp"
                 android:textColor="@android:color/black" />
 
@@ -239,6 +242,7 @@ User/Answer :https://abhiandroid.com/ui/linear-layout-inside-scrollview.html -->
                 android:layout_weight="1.4"
                 android:background="@android:color/darker_gray"
                 android:hint="Heartrate"
+                android:maxLength="4"
                 android:inputType="number"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
